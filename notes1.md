@@ -100,3 +100,33 @@ https://developer.mozilla.org/en-US/docs/Web/API/setInterval
 https://reactjs.org/docs/lifting-state-up.html 
 
 React tutorial: https://reactjs.org/tutorial/tutorial.html
+
+MouseEvent:
+https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
+
+## State
+State change causes rerendering
+
+## React v. 18 
+Released late march 2022. 
+
+v.17
+```
+import ReactDOM from 'react-dom'
+import App from './App'
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+vs v.18
+```
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+```
+
+## Debugging
+console.log('jotain', arvo)
+debugger
+Breakpoints in Sources tab, variable values in Scope
+React developer tools addition to Chrome
