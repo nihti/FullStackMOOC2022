@@ -26,7 +26,19 @@ const Numbers = ({persons, handleDelete}) => {
       </div>
     ))
   )
-} 
+}
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='notification'>
+      {message}
+    </div>
+  )
+}
  
 const App = () => {
   const [persons, setPersons] = useState([
@@ -35,6 +47,7 @@ const App = () => {
   const [newPerson, setNewPerson] = useState(
     { name: '', number: '' }
   )
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     personsRequests
@@ -47,13 +60,24 @@ const App = () => {
     e.preventDefault()
     const personObject = { name: newPerson.name, number: newPerson.number }
     const personExists = persons.find(person => person.name === personObject.name)
-    personExists
-      ? alert(`${newPerson.name} is already added to phonebook`)
-      : personsRequests
-        .create(personObject)
+    const message = () => {
+      setMessage(`${newPerson.name} is already added to phonebook`)
+      setTimeout(() => {
+        setMessage('')
+      }, 2500)
+    }
+    const createPerson = () => {
+      personsRequests.create(personObject)
         .then(response => {
           setPersons([...persons, response.data])
         })
+      setMessage(`${newPerson.name} added to phonebook`)
+      setTimeout(() => {
+        setMessage('')
+      }, 2500)
+    }
+
+    personExists ? message() : createPerson()
     
     setNewPerson({
       name: '',
@@ -72,12 +96,17 @@ const App = () => {
           setPersons(response.data)
         })
       })
+      setMessage(`deleted ${e.target.name} from numbers`)
+      setTimeout(() => {
+        setMessage('')
+      }, 2500)
     }
   }
   
   return (
     <div>
       <h1>Phonebook</h1>
+      { message && <Notification message={message} />}
       <h2>add a new</h2>
       <Form
         newPerson={newPerson}

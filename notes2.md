@@ -45,3 +45,21 @@ https://reactjs.org/docs/forms.html#controlled-components
 
 ## Using state correctly
 https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly 
+
+## NPM 
+All modern JavaScript projects are defined using the node package manager NPM
+- install dependencies from the command line root dir not straight to the package.json
+
+## Promises
+- A Promise is an object representing the eventual completion or failure of an asynchronous operation.
+Three states: 
+1. The promise is pending: It means that the final value (one of the following two) is not available yet.
+2. The promise is fulfilled: It means that the operation has been completed and the final value is available, which generally is a successful operation. This state is sometimes also called resolved.
+3. The promise is rejected: It means that an error prevented the final value from being determined, which generally represents a failed operation.
+
+## DB 
+```
+npx json-server --port 3001 --watch db.json
+```
+
+## REST
