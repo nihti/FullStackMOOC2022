@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Form = ({ newPerson, handleChange, handleClick }) => {
   return (
@@ -29,6 +30,15 @@ const App = () => {
   const [newPerson, setNewPerson] = useState(
     { name: '', number: '' }
   )
+
+  useEffect(() => {
+    const promise = axios.get('http://localhost:3001/persons')
+    promise.then(response => {
+      console.log(response.data)
+      setPersons(response.data)
+    })
+  }, [])
+
 
   const handleClick = (e) => {
     e.preventDefault()
