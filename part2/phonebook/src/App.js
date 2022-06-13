@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
+import personsRequests from './services/persons'
 
 const Form = ({ newPerson, handleChange, handleClick }) => {
   return (
@@ -17,10 +17,15 @@ const Form = ({ newPerson, handleChange, handleClick }) => {
   )
 }
 
-const Numbers = ({persons}) => {
+const Numbers = ({persons, handleDelete}) => {
   return (
-    persons.map(person => <div key={person.name}>{person.name} {person.number}</div>)
- )
+    persons.map(person => (
+      <div key={person.id}>
+        {person.name} {person.number}
+        <button onClick={handleDelete} value={person.id}>delete</button>
+      </div>
+    ))
+  )
 } 
  
 const App = () => {
@@ -32,21 +37,24 @@ const App = () => {
   )
 
   useEffect(() => {
-    const promise = axios.get('http://localhost:3001/persons')
-    promise.then(response => {
-      console.log(response.data)
-      setPersons(response.data)
-    })
+    personsRequests
+      .getAll().then(response => {
+        setPersons(response.data)
+      })
   }, [])
 
 
   const handleClick = (e) => {
     e.preventDefault()
-    //setPersons(persons.concat({ key: persons.length+1, name: newName }))
-    const personExists = persons.find(person => person.name === newPerson.name)
+    const personObject = { name: newPerson.name, number: newPerson.number }
+    const personExists = persons.find(person => person.name === personObject.name)
     personExists
       ? alert(`${newPerson.name} is already added to phonebook`)
-      : setPersons([...persons, { name: newPerson.name, number: newPerson.number }])
+      : personsRequests
+        .create(personObject)
+        .then(response => {
+          setPersons([...persons, response.data])
+        })
     
     setNewPerson({
       name: '',
@@ -56,6 +64,15 @@ const App = () => {
 
   const handleChange = (e) => {
     setNewPerson({...newPerson, [e.target.name]: e.target.value})
+  }
+
+  const handleDelete = (e) => {
+    console.log(e.target.value)
+    personsRequests.remove(e.target.value).then(response => {
+      personsRequests.getAll().then(response => {
+        setPersons(response.data)
+      })
+    })
   }
   
   return (
@@ -68,7 +85,7 @@ const App = () => {
         handleClick={handleClick}
       />
       <h2>Numbers</h2>
-      <Numbers persons={persons} />
+      <Numbers persons={persons} handleDelete={handleDelete}/>
       <div>debug: {newPerson.name} {newPerson.number}</div>
     </div>
   )
