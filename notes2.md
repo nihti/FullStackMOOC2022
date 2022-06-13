@@ -35,3 +35,13 @@ console.log('output', JSON.stringify(output, null, 2))
 ```
 
 ## "React explosion"
+
+## Forms
+Form submit default action: 
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event
+
+## Controlled component
+https://reactjs.org/docs/forms.html#controlled-components
+
+## Using state correctly
+https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly 
